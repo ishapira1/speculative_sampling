@@ -3,7 +3,9 @@
 @ Itai Shapira
 
 This repository contains an implementation of the Random Speculative Sampling Algorithm proposed in the paper "Accelerating Large Language Model Decoding with Speculative Sampling." (https://arxiv.org/pdf/2302.01318.pdf).
+
 This repository was created as a pset solution for Harvard CS229.
+
 
 ## Introduction
 The transformer architecture has a significant advantage over earlier sequence models in terms of parallel processing. However, when generating new sequences with transformers during inference time, each output token is dependent on all previously generated tokens, making the models run *serially* for each token generated. This can be a slow and computationally expensive process, especially for large models with billions of parameters. Additionally, the inability to perform batched inference wastes computational resources as large model inference is typically limited by memory bandwidth rather than compute power. To address this issue, the authors of the paper above propose leveraging the fact that certain tokens are easier to predict than others and can be generated accurately with smaller and weaker but faster models. This technique is not limited to transformers and can be applied to any large autoregressive language model.
