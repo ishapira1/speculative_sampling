@@ -21,12 +21,7 @@ Sample $r \sim U(0, 1)^k$. Iterating over $t < i \leq t + k$, compute $\frac{p_b
 
 If $r_i$ is greater than this quotient, 
 record the index $i = i^\star$ and break. 
-At the end of the loop, if no $r_i$ is greater, let $i^\star = t + k + 1$. 
-We will keep all $x_{<i^\star}$ (rejecting the rest) 
-and then sample one additional token. 
-If $i^\star$ is smaller than the final index $t + k + 1$, 
-we sample $x_{i^\star}$ from $\max(0, p_b(x_{i^\star} \mid x_{<i^\star}) - p_s(x_{i^\star} \mid x_{<i^\star}))$ after normalization. Otherwise, sample $x_{i^\star}$ straight from $p_b(x_{i^\star} \mid x_{<i^\star})$. Output $[x_1, \ldots, x_t, x_{s_{t+1}}, \ldots, x_{s_{i^\star-1}}, x_{i^\star}]$.
-The algorithm repeats this process until the end token is generated or a maximum length is reached. 
+
 
 ## Repository Overview
 This repository contains an implementation of the Random Speculative Sampling Algorithm in Python using the PyTorch library. 
