@@ -17,7 +17,8 @@ The algorithm uses two models: small-but-fast model (in this case, gpt2) and lar
 
 Given a t-token prefix, the algorithm generates k possible tokens sequentially using the slow-but-fast model. Next, using the big model, we compute the distrubtions of next-tokens in parallel using the provisional tokens of the small model.
 Next, we’ll perform a kind of rejection sampling to combine our sets of predictions, in a way that presevers the orginial distrubtion of the big model:
-Sample $r \sim U(0, 1)^k$. Iterating over $t < i \leq t + k$, compute $\frac{p_b(x_{s_i} \mid x_{<i})}{p_s(x_{s_i} \mid x_{<i})}$. If $r_i$ is greater than this quotient, record the index $i = i^$ and break. At the end of the loop, if no $r_i$ is greater, let $i^ = t + k + 1$. We will keep all $x_{<i^}$ (rejecting the rest) and then sample one additional token. If $i^$ is smaller than the final index $t + k + 1$, we sample $x_{i^}$ from $\max(0, p_b(x_{i^} \mid x_{<i^}) - p_s(x_{i^} \mid x_{<i^}))$ after normalization. Otherwise, sample $x_{i^}$ straight from $p_b(x_{i^} \mid x_{<i^})$. Output $[x_1, \ldots, x_t, x_{s_{t+1}}, \ldots, x_{s_{i^-1}}, x_{i^}]$.
+Sample $r \sim U(0, 1)^k$. Iterating over $t < i \leq t + k$, compute $\frac{p_b(x_{s_i} \mid x_{<i})}{p_s(x_{s_i} \mid x_{<i})}$. 
+If $r_i$ is greater than this quotient, record the index $i = i^$ and break. At the end of the loop, if no $r_i$ is greater, let $i^ = t + k + 1$. We will keep all $x_{<i^}$ (rejecting the rest) and then sample one additional token. If $i^$ is smaller than the final index $t + k + 1$, we sample $x_{i^}$ from $\max(0, p_b(x_{i^} \mid x_{<i^}) - p_s(x_{i^} \mid x_{<i^}))$ after normalization. Otherwise, sample $x_{i^}$ straight from $p_b(x_{i^} \mid x_{<i^})$. Output $[x_1, \ldots, x_t, x_{s_{t+1}}, \ldots, x_{s_{i^-1}}, x_{i^}]$.
 
 The algorithm repeats this process until the end token is generated or a maximum length is reached. 
 
