@@ -1,5 +1,5 @@
-# Random Speculative Sampling Algorithm for Accelerating Large Language Model Decoding
-implementation speculative sampling
+# Accelerating Large Language Model Decoding Using Random Speculative Sampling Algorithm for 
+
 @ Itai Shapira
 
 This repository contains an implementation of the Random Speculative Sampling Algorithm proposed in the paper "Accelerating Large Language Model Decoding with Speculative Sampling." (https://arxiv.org/pdf/2302.01318.pdf).
