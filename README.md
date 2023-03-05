@@ -17,10 +17,8 @@ The algorithm uses two models: small-but-fast model (in this case, gpt2) and lar
 
 Given a t-token prefix, the algorithm generates k possible tokens sequentially using the slow-but-fast model. Next, using the big model, we compute the distrubtions of next-tokens in parallel using the provisional tokens of the small model.
 Next, we’ll perform a kind of rejection sampling to combine our sets of predictions, in a way that presevers the orginial distrubtion of the big model:
-Sample $r \sim U(0, 1)^k$. Iterating over $t < i \leq t + k$, compute $\frac{p_b(x_{s_i} \mid x_{<i})}{p_s(x_{s_i} \mid x_{<i})}$. 
-
-If $r_i$ is greater than this quotient, 
-record the index $i = i^\star$ and break. 
+At the end of the loop, if no $r_i$ is greater, let $i^\star = t + k + 1$. 
+The algorithm repeats this process until the end token is generated or a maximum length is reached. 
 
 
 ## Repository Overview
@@ -32,5 +30,8 @@ For maximal speedups, the small model should be at least an order of magnitude s
 The implementation also contains autoregressive runtimes for the small model and the large model, and compares those to runtimes for the efficient attention algorithm.
 
 If you are having trouble observing a speedup, use an extremely "predictable" prompt where the large model and the small model agree, like "A B C D". This will make it easier for the efficient inference algorithm to skip executions of the large model.
+
+## References
+"Accelerating Large Language Model Decoding with Speculative Sampling" (https://arxiv.org/pdf/2302.01318.pdf)
 
 
