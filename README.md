@@ -15,11 +15,10 @@ The transformer architecture has a significant advantage over earlier sequence m
 The paper proposes a technique called Speculative Sampling to speed up decoding in large language models. Decoding can be slow and computationally expensive in large models, as each token prediction requires running the model forward through multiple layers. Speculative Sampling reduces this computational cost by parallelizing the decoding process and speculatively predicting multiple tokens at once. This sampling scheme preserves the distribution of the target model.
 
 ## Algorithm Description
-The algorithm uses two models: small-but-fast model (in this case, gpt2) and large-but-slow model (in this case gpt2-large).
+The algorithm uses two models: small-but-fast model (in this case, gpt2) and large-but-slow model.  The algorithm is implemented using Hugging Face transformer models gpt2 (from the small model) and gpt-large (for the large model). Add a note that says that, for maximal speedups, the small model should be at least an order of magnitude
 
 Given a t-token prefix, the algorithm generates k possible tokens sequentially using the slow-but-fast model. Next, using the big model, we compute the distrubtions of next-tokens in parallel using the provisional tokens of the small model.
-Next, we’ll perform a kind of rejection sampling to combine our sets of predictions, in a way that presevers the orginial distrubtion of the big model:
-At the end of the loop, if no $r_i$ is greater, let $i^\star = t + k + 1$. 
+Next, we’ll perform a kind of rejection sampling to combine our sets of predictions, in a way that presevers the orginial distrubtion of the big model.
 The algorithm repeats this process until the end token is generated or a maximum length is reached. 
 
 
@@ -33,7 +32,15 @@ The implementation also contains autoregressive runtimes for the small model and
 
 If you are having trouble observing a speedup, use an extremely "predictable" prompt where the large model and the small model agree, like "A B C D". This will make it easier for the efficient inference algorithm to skip executions of the large model.
 
+## Requirements
+Python 3
+PyTorch
+Transformers
+
+
 ## References
 "Accelerating Large Language Model Decoding with Speculative Sampling" (https://arxiv.org/pdf/2302.01318.pdf)
+
+See also CS229 website: https://boazbk.github.io/mltheoryseminar/. Instructor: Boaz Barak. Teaching Fellows: Gustaf Ahdritz, Gal Kaplun
 
 
